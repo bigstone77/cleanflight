@@ -732,3 +732,7 @@ void init(void)
 
     systemState |= SYSTEM_STATE_READY;
 }
+
+void _init(void)
+{
+}

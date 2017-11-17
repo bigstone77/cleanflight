@@ -16,7 +16,7 @@
 #
 
 # The target to build, see VALID_TARGETS below
-TARGET    ?= SPRACINGF3NEO
+TARGET    ?= JDCODE
 
 # Compile-time options
 OPTIONS   ?=
@@ -68,7 +68,7 @@ include $(ROOT)/make/system-id.mk
 
 # configure some directories that are relative to wherever ROOT_DIR is located
 ifndef TOOLS_DIR
-TOOLS_DIR := $(ROOT)/tools
+TOOLS_DIR := /var
 endif
 BUILD_DIR := $(ROOT)/build
 DL_DIR    := $(ROOT)/downloads
@@ -152,7 +152,7 @@ endif
 TARGET_DIR     = $(ROOT)/src/main/target/$(BASE_TARGET)
 TARGET_DIR_SRC = $(notdir $(wildcard $(TARGET_DIR)/*.c))
 
-ifeq ($(OPBL),yes)
+ifeq ($(OPBL),no)
 TARGET_FLAGS := -DOPBL $(TARGET_FLAGS)
 .DEFAULT_GOAL := binary
 else
@@ -278,6 +278,7 @@ $(TARGET_HEX): $(TARGET_ELF)
 
 $(TARGET_BIN): $(TARGET_ELF)
 	$(V0) $(OBJCOPY) -O binary $< $@
+	sz obj/cleanflight_2.2.0_JDCODE.bin
 
 $(TARGET_ELF):  $(TARGET_OBJS)
 	$(V1) echo Linking $(TARGET)

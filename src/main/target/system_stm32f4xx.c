@@ -361,7 +361,7 @@ uint32_t hse_value = HSE_VALUE;
 #if defined(STM32F40_41xxx) || defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F401xx) || defined(STM32F469_479xx)
  #define PLL_M      8
 #elif defined (STM32F446xx)
- #define PLL_M      8
+ #define PLL_M      16
 #elif defined (STM32F410xx) || defined (STM32F411xE)
  #define PLL_M      8
 #else
@@ -370,15 +370,15 @@ uint32_t hse_value = HSE_VALUE;
 
 #if defined(STM32F446xx)
 /* PLL division factor for I2S, SAI, SYSTEM and SPDIF: Clock =  PLL_VCO / PLLR */
-#define PLL_R      7
+#define PLL_R      2
 #endif /* STM32F446xx */
 
 #if defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx) || defined(STM32F469_479xx)
-#define PLL_N      360
+#define PLL_N      192
 /* SYSCLK = PLL_VCO / PLL_P */
 #define PLL_P      2
 /* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
-#define PLL_Q      7
+#define PLL_Q      4
 #endif /* STM32F427_437x || STM32F429_439xx || STM32F446xx || STM32F469_479xx */
 
 #if defined (STM32F40_41xxx)
@@ -690,6 +690,14 @@ void SetSysClock(void)
     /* Configure the main PLL */
     RCC->PLLCFGR = PLL_M | (pll_n << 6) | (((pll_p >> 1) -1) << 16) |
                    (RCC_PLLCFGR_PLLSRC_HSE) | (pll_q << 24) | (PLL_R << 28);
+    //		   16 | 360<<6 |  (((2>>1)-1)<<16) |  0x00400000 | (7<<24) | (7<<28);
+    //RCC->PLLCFGR = 0x24003010;
+    // PLLM :  16
+    // PLLN : 192
+    // PLLP : 2
+    // PLLSRC : 0
+    // PLLQ : 4
+    // PLLR : 2
 #else
     /* Configure the main PLL */
     RCC->PLLCFGR = PLL_M | (pll_n << 6) | (((pll_p >> 1) -1) << 16) |

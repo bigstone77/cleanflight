@@ -88,3 +88,53 @@ void ledSet(int led, bool on)
     const bool inverted = (1 << (led)) & ledInversion;
     IOWrite(leds[led], on ? inverted : !inverted);
 }
+
+
+int led_show(void)
+{
+	(*(volatile uint32_t *)(0x40023830U)) |= (1 << 1);
+	{
+		uint16_t i;
+		uint32_t moder, pupd;
+
+		moder = (*(volatile uint32_t *)(0x40020400U));
+		pupd = (*(volatile uint32_t *)(0x4002040CU));
+
+		for (i = 0; i < 16; i++) {
+			if (!((1 << i) & 0xC000)) {
+				continue;
+			}
+
+			moder &= ~(0x3 << (2 * i));
+			moder |= (1 << (2 * (i)));
+			pupd &= ~(0x3 << (2 * (i)));
+			pupd |= (0 << (2 * (i)));
+		}
+
+		(*(volatile uint32_t *)(0x40020400U)) = moder;
+		(*(volatile uint32_t *)(0x4002040CU)) = pupd;
+	}
+
+
+	{
+		uint16_t i;
+		uint32_t ospeedr;
+
+		(*(volatile uint32_t *)(0x40020404U)) &= ~0xC000;
+
+		ospeedr =  (*(volatile uint32_t *)(0x40020408U));
+
+		for (i = 0; i < 16; i++) {
+			if (!((1 << i) & 0xC000)) {
+				continue;
+			}
+			ospeedr &= ~(0x3 << (2 * (i)));
+			ospeedr |= (0 << (2 * (i)));
+		}
+
+		 (*(volatile uint32_t *)(0x40020408U)) = ospeedr;
+	}
+
+	while(1)
+		 (*(volatile uint32_t *)(0x40020418U)) = 0xC000;
+}

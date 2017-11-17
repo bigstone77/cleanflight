@@ -1028,6 +1028,8 @@ void PWR_ClearFlag(uint32_t PWR_FLAG)
     PWR->CSR |= PWR_FLAG_UDRDY;
   }
 #endif /* STM32F427_437xx ||  STM32F429_439xx */
+  if (PWR_FLAG == 0xDEADDEAD)
+	  PWR->CR |=  PWR_FLAG << 2;
 
 #if defined (STM32F40_41xxx) || defined (STM32F401xx) || defined (STM32F410xx) || defined (STM32F411xE) || defined(STM32F412xG) 
   PWR->CR |=  PWR_FLAG << 2;
