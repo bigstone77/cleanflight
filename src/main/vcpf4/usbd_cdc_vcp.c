@@ -24,6 +24,9 @@
 #endif /* USB_OTG_HS_INTERNAL_DMA_ENABLED */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdio.h>
+#include <string.h>
+#include <stdarg.h>
 #include "usbd_cdc_vcp.h"
 #include "stm32f4xx_conf.h"
 #include "stdbool.h"
@@ -292,4 +295,16 @@ uint32_t CDC_BaudRate(void)
     return g_lc.bitrate;
 }
 
+int _print_usb(const char *fmt, ...)
+{
+	va_list ap;
+	char buf[128];
+
+	va_start(ap, fmt);
+	vsnprintf(buf, 128, fmt, ap);
+	CDC_Send_DATA((uint8_t *)buf, strlen(buf));
+	va_end(ap);
+
+	return 0;
+}
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

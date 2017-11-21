@@ -374,11 +374,11 @@ uint32_t hse_value = HSE_VALUE;
 #endif /* STM32F446xx */
 
 #if defined(STM32F427_437xx) || defined(STM32F429_439xx) || defined(STM32F446xx) || defined(STM32F469_479xx)
-#define PLL_N      192
+#define PLL_N      336
 /* SYSCLK = PLL_VCO / PLL_P */
 #define PLL_P      2
 /* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
-#define PLL_Q      4
+#define PLL_Q      7
 #endif /* STM32F427_437x || STM32F429_439xx || STM32F446xx || STM32F469_479xx */
 
 #if defined (STM32F40_41xxx)
@@ -693,10 +693,10 @@ void SetSysClock(void)
     //		   16 | 360<<6 |  (((2>>1)-1)<<16) |  0x00400000 | (7<<24) | (7<<28);
     //RCC->PLLCFGR = 0x24003010;
     // PLLM :  16
-    // PLLN : 192
+    // PLL_N : 336
     // PLLP : 2
     // PLLSRC : 0
-    // PLLQ : 4
+    // PLLQ : 7
     // PLLR : 2
 #else
     /* Configure the main PLL */

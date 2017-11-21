@@ -64,7 +64,11 @@ const i2cHardware_t i2cHardware[I2CDEV_COUNT] = {
         .device = I2CDEV_2,
         .reg = I2C2,
         .sclPins = { DEFIO_TAG_E(PB10), DEFIO_TAG_E(PF1) },
+#ifdef STM32F446xx
+        .sdaPins = { DEFIO_TAG_E(PC12), DEFIO_TAG_E(PF0) },
+#else
         .sdaPins = { DEFIO_TAG_E(PB11), DEFIO_TAG_E(PF0) },
+#endif
         .rcc = RCC_APB1(I2C2),
         .ev_irq = I2C2_EV_IRQn,
         .er_irq = I2C2_ER_IRQn,

@@ -29,7 +29,7 @@
 #define DEBUG_MODE DEBUG_NONE // change this to change initial debug mode
 
 #define I2C1_OVERCLOCK true
-#define I2C2_OVERCLOCK true
+#define I2C2_OVERCLOCK false
 
 #ifdef STM32F1
 #define MINIMAL_CLI
