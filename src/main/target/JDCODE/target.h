@@ -28,8 +28,10 @@
 #define UART3_TX_PIN                    PC10
 #define UART3_RX_PIN                    PC5
 
-#define SERIALRX_UART                       SERIAL_PORT_USART3
-#define SERIALRX_PROVIDER                   SERIALRX_SBUS
+#define DEFAULT_RX_FEATURE          	FEATURE_RX_SERIAL
+#define USE_SERIALRX_JDCODE
+#define SERIALRX_UART                   SERIAL_PORT_USART3
+#define SERIALRX_PROVIDER               SERIALRX_JDCODE
 
 #define USE_I2C
 #define USE_I2C_DEVICE_2

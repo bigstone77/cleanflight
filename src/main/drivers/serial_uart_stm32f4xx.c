@@ -33,6 +33,7 @@
 #include "drivers/serial.h"
 #include "drivers/serial_uart.h"
 #include "drivers/serial_uart_impl.h"
+#include "drivers/light_led.h"
 
 #ifdef USE_UART
 
@@ -90,8 +91,8 @@ const uartHardware_t uartHardware[UARTDEV_COUNT] = {
 #ifdef USE_UART3_TX_DMA
         .txDMAStream = DMA1_Stream3,
 #endif
-        .rxPins = { DEFIO_TAG_E(PB11), DEFIO_TAG_E(PC11), DEFIO_TAG_E(PD9) },
-        .txPins = { DEFIO_TAG_E(PB10), DEFIO_TAG_E(PC10), DEFIO_TAG_E(PD8) },
+        .rxPins = { DEFIO_TAG_E(PC5)},
+        .txPins = { DEFIO_TAG_E(PC10)},
         .af = GPIO_AF_USART3,
         .rcc = RCC_APB1(USART3),
         .irqn = USART3_IRQn,

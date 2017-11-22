@@ -42,6 +42,7 @@
 #include "fc/config.h"
 #include "fc/rc_controls.h"
 #include "fc/rc_modes.h"
+#include "drivers/light_led.h"
 
 #include "flight/failsafe.h"
 
@@ -50,6 +51,7 @@
 #include "rx/rx.h"
 #include "rx/pwm.h"
 #include "rx/sbus.h"
+#include "rx/jdcode.h"
 #include "rx/spektrum.h"
 #include "rx/sumd.h"
 #include "rx/sumh.h"
@@ -149,7 +151,7 @@ void pgResetFn_rxConfig(rxConfig_t *rxConfig)
 #ifdef RX_CHANNELS_TAER
     parseRcChannels("TAER1234", rxConfig);
 #else
-    parseRcChannels("AETR1234", rxConfig);
+    parseRcChannels("AERT1234", rxConfig);
 #endif
 }
 
@@ -228,7 +230,15 @@ STATIC_UNIT_TESTED void rxUpdateFlightChannelStatus(uint8_t channel, bool valid)
 bool serialRxInit(const rxConfig_t *rxConfig, rxRuntimeConfig_t *rxRuntimeConfig)
 {
     bool enabled = false;
+	
+
     switch (rxConfig->serialrx_provider) {
+#ifdef USE_SERIALRX_JDCODE
+    case SERIALRX_JDCODE:
+        enabled = jdcodeInit(rxConfig, rxRuntimeConfig);
+        break;
+#endif
+
 #ifdef USE_SERIALRX_SPEKTRUM
     case SERIALRX_SRXL:
     case SERIALRX_SPEKTRUM1024:
