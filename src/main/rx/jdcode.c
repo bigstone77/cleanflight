@@ -25,6 +25,7 @@ uint16_t rxBuf[RXBUF_SIZE];
 uint16_t txBuf[TXBUF_SIZE];
 uint16_t jdcodeChannel[6];
 
+static bool JDCodeFrameDone = false;
 
 static uint8_t rxbuf_size()
 {
@@ -61,11 +62,14 @@ static int get_cmdblock(void)
 		checksum = ((sum&0xFF)==0xF0)? 0xEF : sum&0xFF;
 
 		if(checksum == buf[7]){
-			for(n=0;n<6; n++){
-				jdcodeChannel[n] = buf[n+1];
-			//	_print_usb("%d ", jdcodeChannel[n]);
+			if(buf[1] == 0xA1){
+				buf[2] = 100+(100-buf[2])*2/3;
+				buf[3] = 100+(buf[3]-100)*2/3;
+				buf[4] = 100+(buf[4]-100)*4/3;
+				for(n=0;n<4; n++)
+					jdcodeChannel[n] = buf[n+2];
+				JDCodeFrameDone = true;
 			}
-			//_print_usb("\r\n");
 			return 1;
 		}
 	}
@@ -83,7 +87,11 @@ static void DataReceive(uint16_t c)
 
 static uint8_t jdcodeFrameStatus(void)
 {
-	return RX_FRAME_COMPLETE;
+    if (!JDCodeFrameDone)
+        return RX_FRAME_PENDING;
+    JDCodeFrameDone = false;
+
+    return RX_FRAME_COMPLETE;
 }
 
 static uint16_t jdcodeReadRawRC(const rxRuntimeConfig_t *rxRuntimeConfig, uint8_t chan)
@@ -94,8 +102,7 @@ static uint16_t jdcodeReadRawRC(const rxRuntimeConfig_t *rxRuntimeConfig, uint8_
 
 	if(chan>4)
 		chan = 4;
-	//_print_usb("ch:%d, val:%d\r\n", chan, 885 + 1230*jdcodeChannel[chan+1]/200);
-	return 885 + 1230*jdcodeChannel[chan+1]/200;
+	return 885 + 1230*jdcodeChannel[chan]/200;
 }
 
 bool jdcodeInit(const rxConfig_t *rxConfig, rxRuntimeConfig_t *rxRuntimeConfig)
@@ -115,7 +122,7 @@ bool jdcodeInit(const rxConfig_t *rxConfig, rxRuntimeConfig_t *rxRuntimeConfig)
 	serialPort_t *port = openSerialPort(portConfig->identifier,
 			FUNCTION_RX_SERIAL,
 			DataReceive,
-			38400/2,
+			38400,
 			MODE_RXTX,
 			SERIAL_STOPBITS_1 | SERIAL_PARITY_NO);
 	return port != NULL;

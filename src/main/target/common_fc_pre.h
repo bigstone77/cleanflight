@@ -29,7 +29,7 @@
 #define DEBUG_MODE DEBUG_NONE // change this to change initial debug mode
 
 #define I2C1_OVERCLOCK true
-#define I2C2_OVERCLOCK false
+#define I2C2_OVERCLOCK true
 
 #ifdef STM32F1
 #define MINIMAL_CLI
@@ -140,9 +140,9 @@
 
 #if (FLASH_SIZE > 256)
 // Temporarily moved GPS here because of overflowing flash size on F3
-#define GPS
-#define USE_NAV
-#define USE_UNCOMMON_MIXERS
+//#define GPS
+//#define USE_NAV
+//#define USE_UNCOMMON_MIXERS
 #endif
 
 #define USE_RCSPLIT

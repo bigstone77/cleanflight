@@ -151,7 +151,7 @@ void pgResetFn_rxConfig(rxConfig_t *rxConfig)
 #ifdef RX_CHANNELS_TAER
     parseRcChannels("TAER1234", rxConfig);
 #else
-    parseRcChannels("AERT1234", rxConfig);
+    parseRcChannels("EART1234", rxConfig);
 #endif
 }
 

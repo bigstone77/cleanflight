@@ -1,8 +1,12 @@
 
 #pragma once
 
-#define TARGET_BOARD_IDENTIFIER             "JDCODE"
-#define USBD_PRODUCT_STRING                 "JDCode"
+#define TARGET_BOARD_IDENTIFIER         "JDCODE"
+#define USBD_PRODUCT_STRING             "JDCode"
+
+#define TARGET_DEFAULT_MIXER    	MIXER_QUADX
+#define DEFAULT_FEATURES 		FEATURE_MOTOR_STOP
+#define DEFAULT_RX_FEATURE          	FEATURE_RX_SERIAL
 
 #define LED0_PIN                        PB14
 #define LED0_INVERTED
@@ -28,7 +32,6 @@
 #define UART3_TX_PIN                    PC10
 #define UART3_RX_PIN                    PC5
 
-#define DEFAULT_RX_FEATURE          	FEATURE_RX_SERIAL
 #define USE_SERIALRX_JDCODE
 #define SERIALRX_UART                   SERIAL_PORT_USART3
 #define SERIALRX_PROVIDER               SERIALRX_JDCODE
@@ -41,10 +44,11 @@
 #define I2C2_SCL                        PB10
 #define I2C2_SDA                        PC12
 
-#define TARGET_IO_PORTA                     0xFCFF
-#define TARGET_IO_PORTB                     0xF7FF
-#define TARGET_IO_PORTC                     0xFFFF
-#define TARGET_IO_PORTD                     (BIT(2))
+#define TARGET_IO_PORTA                 0xFCFF
+#define TARGET_IO_PORTB                 0xF7FF
+#define TARGET_IO_PORTC                 0xFFFF
+#define TARGET_IO_PORTD                 (BIT(2))
 
-#define USABLE_TIMER_CHANNEL_COUNT           4 
-#define USED_TIMERS                         (TIM_N(3))
+#define BRUSHED_MOTORS
+#define USABLE_TIMER_CHANNEL_COUNT      4 
+#define USED_TIMERS                     (TIM_N(3))
